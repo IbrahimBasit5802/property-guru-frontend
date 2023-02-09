@@ -219,6 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 String? phoneNum;
                 String? empID;
                 String? role;
+                String? salary;
 
                 var response;
 
@@ -240,6 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     empID = response.data['empID'].toString();
                     phoneNum = response.data['phone'].toString();
                     role = response.data['userType'].toString();
+                    salary = response.data['salary'].toString();
                     print("Sub : $subStatus");
                   } catch (e) {
                     print(e);
@@ -250,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     context,
                     PageTransition(
                         type: PageTransitionType.rightToLeft,
-                        child:  HomePage(token: tok, subStatus: subStatus, empName: name, empPhone: phoneNum, empID: empID, empType: role)));
+                        child:  HomePage(token: tok, subStatus: subStatus, empName: name, empPhone: phoneNum, empID: empID, empType: role, empSalary: salary,)));
 
               },
             ),
