@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:naseeb/login_screen.dart';
-import 'package:naseeb/stored_employees.dart';
+
 import 'package:naseeb/verifyController.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '/widgets/gradient_button.dart';
-import '/widgets/login_field.dart';
+
 import 'Invalid.dart';
 import 'pallete.dart';
 
