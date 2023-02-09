@@ -5,21 +5,33 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:naseeb/home_page.dart';
 import 'package:naseeb/verifyController.dart';
 import 'package:page_transition/page_transition.dart';
-
+import 'loading_controller.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import '/widgets/gradient_button.dart';
 import '/widgets/login_field.dart';
 import 'Invalid.dart';
 import 'login_controller.dart';
 import 'pallete.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late ProgressDialog progressDialog;
 
   @override
   Widget build(BuildContext context) {
     TextEditingController empIDController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     LoginController controller2 = Get.put(LoginController());
+    LoadingController loadingController = Get.put(LoadingController());
+
+    loadingController.isNotLoading();
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Pallete.backgroundColor,
@@ -113,6 +125,8 @@ class LoginScreen extends StatelessWidget {
                         builder: (loginController) {
                           return ElevatedButton(
                             onPressed: () async {
+                              showProgress(context, 'Logging In', false);
+
                               var dio = Dio();
 
                               var response;
@@ -125,6 +139,7 @@ class LoginScreen extends StatelessWidget {
                               if (passwordController.text == null) {
                                 passwordController.text = "";
                               }
+                              loadingController.isLoading();
                               try {
                                 response = await dio.post(
                                     "https://property-guru-api.onrender.com/authenticate",
@@ -138,6 +153,8 @@ class LoginScreen extends StatelessWidget {
                                 print(e);
 
                               }
+                              hideProgress();
+                              loadingController.isNotLoading();
 
                               String? token;
 
@@ -262,5 +279,33 @@ class LoginScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  showProgress(BuildContext context, String message, bool isDismissible) async {
+    progressDialog = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: isDismissible);
+    progressDialog.style(
+        message: message,
+        borderRadius: 10.0,
+        backgroundColor: Colors.black,
+        progressWidget: Container(
+            padding: EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.white,
+            )),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        messageTextStyle: TextStyle(
+            color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.w600));
+    await progressDialog.show();
+  }
+
+  updateProgress(String message) {
+    progressDialog.update(message: message);
+  }
+
+  hideProgress() async {
+    if(progressDialog!=null)
+      await progressDialog.hide();
   }
 }

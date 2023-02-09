@@ -6,6 +6,7 @@ import 'package:naseeb/login_screen.dart';
 import 'package:naseeb/stored_employees.dart';
 import 'package:naseeb/verifyController.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import '/widgets/gradient_button.dart';
 import '/widgets/login_field.dart';
 import 'Invalid.dart';
@@ -19,6 +20,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  late ProgressDialog progressDialog;
   @override
   Widget build(BuildContext context) {
     TextEditingController empIDController = TextEditingController();
@@ -150,6 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       builder: (invalidController) {
                         return ElevatedButton(
                           onPressed: () async {
+                            showProgress(context, "Signing Up...", false);
                             var dio = Dio();
                             String? userName;
                             var response;
@@ -169,6 +172,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               print(e);
                               print("nasa");
                             }
+
+                            hideProgress();
 
                             if (response.data['success'] == false) {
                               controller2.setInvalid();
@@ -265,6 +270,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 builder: (invalidController) {
                               return ElevatedButton(
                                 onPressed: () async {
+                                  showProgress(context, "Verifying your employee id, please wait", false);
                                   var dio = Dio();
                                   var userName = "";
                                   var response;
@@ -283,6 +289,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     print(e);
 
                                   }
+
+                                  hideProgress();
 
                                   if (response.data['success'] == false) {
                                     controller2.setInvalid();
@@ -405,5 +413,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       },
     );
+  }
+
+  showProgress(BuildContext context, String message, bool isDismissible) async {
+    progressDialog = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: isDismissible);
+    progressDialog.style(
+        message: message,
+        borderRadius: 10.0,
+        backgroundColor: Colors.black,
+        progressWidget: Container(
+            padding: EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.white,
+            )),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        messageTextStyle: TextStyle(
+            color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.w600));
+    await progressDialog.show();
+  }
+
+  updateProgress(String message) {
+    progressDialog.update(message: message);
+  }
+
+  hideProgress() async {
+    if(progressDialog!=null)
+      await progressDialog.hide();
   }
 }
