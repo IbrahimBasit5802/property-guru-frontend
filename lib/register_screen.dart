@@ -30,6 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     InvalidController controller2 = Get.put(InvalidController());
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Pallete.backgroundColor,
       ),

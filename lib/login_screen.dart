@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     loadingController.isNotLoading();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Pallete.backgroundColor,
       ),
