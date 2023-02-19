@@ -10,6 +10,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import '/widgets/gradient_button.dart';
 
 import 'Invalid.dart';
+import 'otp_screen.dart';
 import 'pallete.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -183,7 +184,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                             else if(response.data['success'] == true){
                               controller2.setValid();
-                              msg = response.data['msg'];
+                              msg = "Verify your phone number";
                             }
 
                             !controller2.invalid
@@ -384,7 +385,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     context,
                     PageTransition(
                         type: PageTransitionType.rightToLeftWithFade,
-                        child: const LoginScreen()));
+                        child: Otp()));
 
               },
             ),
