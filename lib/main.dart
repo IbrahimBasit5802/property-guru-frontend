@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:naseeb/otp_screen.dart';
 
 import 'login_screen.dart';
 import 'pallete.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Pallete.backgroundColor,
       ),
-      home: const LoginScreen(),
+      home: Otp(),
     );
   }
 }
