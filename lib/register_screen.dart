@@ -2,13 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:naseeb/addPhoneNumber_screen.dart';
 import 'package:naseeb/login_screen.dart';
 
 import 'package:naseeb/verifyController.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '/widgets/gradient_button.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'Invalid.dart';
 import 'otp_screen.dart';
 import 'pallete.dart';
@@ -25,7 +26,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     TextEditingController empIDController = TextEditingController();
-    TextEditingController phoneNumberController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     VerifyController controller = Get.put(VerifyController());
     InvalidController controller2 = Get.put(InvalidController());
@@ -78,33 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 15),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            maxWidth: 400,
-                          ),
-                          child: TextFormField(
-                            controller: phoneNumberController,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(27),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Pallete.borderColor,
-                                  width: 3,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Pallete.gradient2,
-                                  width: 3,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              hintText: "Phone Number",
-                            ),
-                          ),
-                        ),
+
                         const SizedBox(height: 15),
                         ConstrainedBox(
                           constraints: const BoxConstraints(
@@ -154,43 +128,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       builder: (invalidController) {
                         return ElevatedButton(
                           onPressed: () async {
-                            showProgress(context, "Signing Up...", false);
-                            var dio = Dio();
-                            String? userName;
-                            var response;
-                            String? msg;
-                            final String id = empIDController.text;
-                            print(id);
-                            try {
-                              response = await dio.post(
-                                  "https://property-guru-api.onrender.com/adduser",
-                                  data: {"empID": empIDController.text.toString(), "phone": phoneNumberController.text.toString(), "password": passwordController.text.toString()});
-                              print(response);
-
-
-
-                              userName = response.data['empName'];
-                            } catch (e) {
-                              print(e);
-                              print("nasa");
-                            }
-
-                            hideProgress();
-
-                            if (response.data['success'] == false) {
-                              controller2.setInvalid();
-                              msg = response.data['msg'];
-                            }
-
-                            else if(response.data['success'] == true){
-                              controller2.setValid();
-                              msg = "Verify your phone number";
-                            }
-
-                            !controller2.invalid
-                                ? _showConfirmationDialogSignUp(
-                                context, msg)
-                                : _showErrorDialog(context, msg);
+                            print("Register Screen ID Value: " + empIDController.text.toString());
+                            print("Register Screen Password Value: " + passwordController.text.toString());
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeftWithFade,
+                                    child:  MyPhone(empID: empIDController.text.toString(), empPassword: passwordController.text.toString(),)));
+                            // showProgress(context, "Signing Up...", false);
+                            // var dio = Dio();
+                            // String? userName;
+                            // var response;
+                            // String? msg;
+                            // final String id = empIDController.text;
+                            // print(id);
+                            // try {
+                            //   response = await dio.post(
+                            //       "https://property-guru-api.onrender.com/adduser",
+                            //       data: {"empID": empIDController.text.toString(), "phone": phoneNumberController.text.toString(), "password": passwordController.text.toString()});
+                            //   print(response);
+                            //
+                            //
+                            //
+                            //   userName = response.data['empName'];
+                            // } catch (e) {
+                            //   print(e);
+                            //   print("nasa");
+                            // }
+                            //
+                            // hideProgress();
+                            //
+                            // if (response.data['success'] == false) {
+                            //   controller2.setInvalid();
+                            //   msg = response.data['msg'];
+                            // }
+                            //
+                            // else if(response.data['success'] == true){
+                            //   controller2.setValid();
+                            //   msg = "Verify your phone number";
+                            // }
+                            //
+                            // !controller2.invalid
+                            //     ? _showConfirmationDialogSignUp(
+                            //     context, msg)
+                            //     : _showErrorDialog(context, msg);
                           },
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(395, 55),
@@ -367,35 +348,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  _showConfirmationDialogSignUp(BuildContext context, msg) {
-    VerifyController controller = Get.put(VerifyController());
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Congratulations'),
-          content: Text(msg),
-          actions: <Widget>[
-            ElevatedButton(
-              child: Text('Ok'),
-              onPressed: () {
-                controller.unverify();
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.rightToLeftWithFade,
-                        child: Otp()));
-
-              },
-            ),
-
-
-          ],
-        );
-      },
-    );
-  }
+  // _showConfirmationDialogSignUp(BuildContext context, msg) {
+  //   VerifyController controller = Get.put(VerifyController());
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text('Congratulations'),
+  //         content: Text(msg),
+  //         actions: <Widget>[
+  //           ElevatedButton(
+  //             child: Text('Ok'),
+  //             onPressed: () async {
+  //
+  //               controller.unverify();
+  //
+  //               Navigator.pop(context);
+  //
+  //               Navigator.push(
+  //                   context,
+  //                   PageTransition(
+  //                       type: PageTransitionType.rightToLeftWithFade,
+  //                       child: MyPhone()));
+  //
+  //             },
+  //           ),
+  //
+  //
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   _showErrorDialog(BuildContext context, msg) {
     return showDialog(

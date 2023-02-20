@@ -24,33 +24,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 
-  Future<void> getInfo() async {
-    var response;
 
-    var dio = Dio();
-
-
-
-    try {
-      response = await dio.get('https://property-guru-api.onrender.com/getinfo', options: Options(
-          headers: {
-            "Authorization": "Bearer $token"
-          }
-
-
-      ));
-      print(response);
-      subStatus = response.data['subscriptionStatus'].toString();
-      empName = response.data['name'].toString();
-      empID = response.data['empID'].toString();
-      empPhone = response.data['phone'].toString();
-      empType = response.data['userType'].toString();
-      empSalary = response.data['salary'].toString();
-      print("Sub : $subStatus");
-    } catch (e) {
-      print(e);
-    }
-  }
 }
 
 class _HomePageState extends State<HomePage> {
@@ -71,7 +45,7 @@ class _HomePageState extends State<HomePage> {
 
                     onRefresh: () async {
                       setState(() async {
-                       await widget.getInfo();
+
                       });
                     },
                     child:

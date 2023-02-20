@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "686189454575",
+    "project_id": "property-guru-9ef36",
+    "storage_bucket": "property-guru-9ef36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686189454575:android:19f13dae086b1fe8bf271a",
+        "android_client_info": {
+          "package_name": "com.example.naseeb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "686189454575-e525l08bvfo9fqoadtfcuhr31j375ddi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmm1EFLdwQ28bMJYUdWgaA7ytAPxj6Y24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "686189454575-e525l08bvfo9fqoadtfcuhr31j375ddi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

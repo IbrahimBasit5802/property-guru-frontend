@@ -44,6 +44,8 @@ dependencies:
   line_awesome_flutter: ^2.0.0
   flutter_screenutil: ^5.6.1
   progress_dialog: ^1.2.4
+  firebase_core: ^2.6.1
+  firebase_auth: ^4.2.8
 
 
 dev_dependencies:
@@ -75,6 +77,7 @@ flutter:
     - assets/images/illustration-3.png
     - assets/svgs/
     - assets/verify.gif
+    - assets/img1.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
