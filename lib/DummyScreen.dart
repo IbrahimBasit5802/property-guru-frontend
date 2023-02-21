@@ -29,24 +29,55 @@ class DummyScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 100,),
-              GestureDetector(
-                onTap: () async {
-                  var dio = Dio();
-                  try {
-                    var response = await dio.get('https://property-guru-api.onrender.com/getannouncement');
-                    ann_title = response.data['title'];
-                    ann_content = response.data['announcement'];
-                    ann_date = response.data['date'];
+            Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Pallete.gradient1,
+                      Pallete.gradient2,
+                      Pallete.gradient3,
+                    ],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                  ),
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                child:
+                ElevatedButton(
+                  onPressed: () async {
+                    var dio = Dio();
+                    try {
+                      var response = await dio.get('https://property-guru-api.onrender.com/getannouncement');
+                      ann_title = response.data['title'];
+                      ann_content = response.data['announcement'];
+                      ann_date = response.data['date'];
                     } catch (e) {
-                    print(e);
-                  }
-                  Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.fade,
-                          child: AnnouncementScreen(title: ann_title, content: ann_content, date: ann_date)));
-                },
-                  child: GradientButton(ButtonText: "Announcements")),
+                      print(e);
+                    }
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.fade,
+                            child: AnnouncementScreen(title: ann_title, content: ann_content, date: ann_date)));
+
+
+                  },
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(395, 55),
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
+                  child: Text(
+                    "Announcements",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17,
+                    ),
+                  ),
+                )
+            ),
+
+
               const SizedBox(height: 20,),
               GradientButton(ButtonText: "Dummy Button"),
               const SizedBox(height: 20,),

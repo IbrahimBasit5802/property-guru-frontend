@@ -22,8 +22,7 @@ class GradientButton extends StatefulWidget {
 class _GradientButtonState extends State<GradientButton> {
   @override
   Widget build(BuildContext context) {
-    VerifyController controller = Get.put(VerifyController());
-    InvalidController controller2 = Get.put(InvalidController());
+
     return Container(
         decoration: BoxDecoration(
           gradient: const LinearGradient(
@@ -37,49 +36,11 @@ class _GradientButtonState extends State<GradientButton> {
           ),
           borderRadius: BorderRadius.circular(7),
         ),
-        child: GetBuilder<InvalidController>(builder: (invalidController) {
-          return ElevatedButton(
+        child:
+           ElevatedButton(
             onPressed: () async {
-              if (widget.ButtonText == "Register") {
-                controller2.setValid();
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.leftToRight,
-                        child: const RegisterScreen()));
-              } else if (widget.ButtonText == "Login Instead") {
-                controller.unverify();
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: const LoginScreen()));
-              } else if (widget.ButtonText == "Verify") {
-                var dio = Dio();
-                var userName;
-                var response;
-                var msg;
-                print("Hey: " + widget.employeeID);
-                try {
-                  response = await dio.post("http://localhost:3000/verifyemp",
-                      data: {widget.employeeID});
 
-                  print(response);
-                  userName = response.data['empName'];
-                  print("Hey: " + widget.employeeID);
-                } catch (e) {
-                  print(e);
-                }
 
-                if (response.data['success'] == false) {
-                  controller2.setInvalid();
-                  msg = response.data['msg'];
-                }
-
-                !controller2.invalid
-                    ? _showConfirmationDialog(context, userName)
-                    : _showErrorDialog(context, msg);
-              }
             },
             style: ElevatedButton.styleFrom(
               fixedSize: const Size(395, 55),
@@ -93,8 +54,10 @@ class _GradientButtonState extends State<GradientButton> {
                 fontSize: 17,
               ),
             ),
-          );
-        }));
+          )
+    );
+
+
   }
 
   _showErrorDialog(BuildContext context, msg) {
