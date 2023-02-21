@@ -225,37 +225,65 @@ class _OtpState extends State<Otp> {
 
   }
 
+  Widget field({required bool autoFocus, controller}) {
+   return SizedBox(
+    height: 60,
+    width: 50,
+    child: TextField(
+      autofocus: autoFocus,
+      textAlign: TextAlign.center,
+      keyboardType: TextInputType.number,
+      controller: controller,
+      maxLength: 1,
+      cursorColor: Theme.of(context).primaryColor,
+      decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          counterText: '',
+          hintStyle: TextStyle(color: Colors.black, fontSize: 20.0)),
+      onChanged: (value) {
+        if (value.length == 1) {
+          FocusScope.of(context).nextFocus();
+        }
+      },
+    ),
+  );
+  }
+
+
   Widget _textFieldOTP({required bool first, last, controller}) {
 
-    return Container(
-      height: 85,
-      child: AspectRatio(
-        aspectRatio: 1.0,
-        child: TextField(
-          autofocus: true,
-          onChanged: (value) {
-            if (value.length == 1 && last == false) {
-              FocusScope.of(context).nextFocus();
-            }
-            if (value.length == 0 && first == false) {
-              FocusScope.of(context).previousFocus();
-            }
-          },
-          showCursor: false,
-          readOnly: false,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.purple),
-          keyboardType: TextInputType.number,
-          controller: controller,
-          maxLength: 1,
-          decoration: InputDecoration(
-            counter: Offstage(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 2, color: Colors.white),
-                borderRadius: BorderRadius.circular(12)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 2, color: Colors.purple),
-                borderRadius: BorderRadius.circular(12)),
+    return Expanded(
+      child: Container(
+        height: 85,
+       // width: MediaQuery.of(context).size.width * 0.1,
+        child: AspectRatio(
+          aspectRatio: 1.0,
+          child: TextField(
+            autofocus: true,
+            onChanged: (value) {
+              if (value.length == 1 && last == false) {
+                FocusScope.of(context).nextFocus();
+              }
+              if (value.length == 0 && first == false) {
+                FocusScope.of(context).previousFocus();
+              }
+            },
+            showCursor: false,
+            readOnly: false,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.purple),
+            keyboardType: TextInputType.number,
+            controller: controller,
+            maxLength: 1,
+            decoration: InputDecoration(
+              counter: Offstage(),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 2, color: Colors.white),
+                  borderRadius: BorderRadius.circular(12)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 2, color: Colors.purple),
+                  borderRadius: BorderRadius.circular(12)),
+            ),
           ),
         ),
       ),

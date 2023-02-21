@@ -4,11 +4,22 @@ import 'package:naseeb/announcement_screen.dart';
 import 'package:naseeb/pallete.dart';
 import 'package:naseeb/widgets/gradient_button.dart';
 import 'package:page_transition/page_transition.dart';
-class DummyScreen extends StatelessWidget {
+import 'package:progress_dialog/progress_dialog.dart';
+class DummyScreen extends StatefulWidget {
+
   DummyScreen({Key? key}) : super(key: key);
+
+  @override
+  State<DummyScreen> createState() => _DummyScreenState();
+}
+
+class _DummyScreenState extends State<DummyScreen> {
   String? ann_title;
+
   String? ann_content;
+
   String? ann_date;
+  late ProgressDialog progressDialog;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,6 +56,7 @@ class DummyScreen extends StatelessWidget {
                 child:
                 ElevatedButton(
                   onPressed: () async {
+                    showProgress(context, "Fetching Announcements...", false);
                     var dio = Dio();
                     try {
                       var response = await dio.get('https://property-guru-api.onrender.com/getannouncement');
@@ -54,6 +66,7 @@ class DummyScreen extends StatelessWidget {
                     } catch (e) {
                       print(e);
                     }
+                    hideProgress();
                     Navigator.push(
                         context,
                         PageTransition(
@@ -89,5 +102,33 @@ class DummyScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  showProgress(BuildContext context, String message, bool isDismissible) async {
+    progressDialog = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: isDismissible);
+    progressDialog.style(
+        message: message,
+        borderRadius: 10.0,
+        backgroundColor: Colors.black,
+        progressWidget: Container(
+            padding: EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.white,
+            )),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        messageTextStyle: TextStyle(
+            color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.w600));
+    await progressDialog.show();
+  }
+
+  updateProgress(String message) {
+    progressDialog.update(message: message);
+  }
+
+  hideProgress() async {
+    if(progressDialog!=null)
+      await progressDialog.hide();
   }
 }
