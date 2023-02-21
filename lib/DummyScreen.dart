@@ -8,7 +8,7 @@ class DummyScreen extends StatelessWidget {
   DummyScreen({Key? key}) : super(key: key);
   String? ann_title;
   String? ann_content;
-  DateTime? ann_date;
+  String? ann_date;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

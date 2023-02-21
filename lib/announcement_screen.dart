@@ -5,7 +5,7 @@ import 'package:naseeb/pallete.dart';
 class AnnouncementScreen extends StatefulWidget {
   String? title;
   String? content;
-  DateTime? date;
+  String? date;
   AnnouncementScreen({super.key, required this.title, required this.content, required this.date});
   @override
   State<AnnouncementScreen> createState() => _AnnouncementScreenState();
