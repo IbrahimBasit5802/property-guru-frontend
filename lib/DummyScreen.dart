@@ -1,9 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:naseeb/announcement_screen.dart';
 import 'package:naseeb/pallete.dart';
 import 'package:naseeb/widgets/gradient_button.dart';
+import 'package:page_transition/page_transition.dart';
 class DummyScreen extends StatelessWidget {
-  const DummyScreen({Key? key}) : super(key: key);
-
+  DummyScreen({Key? key}) : super(key: key);
+  String? ann_title;
+  String? ann_content;
+  DateTime? ann_date;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +29,24 @@ class DummyScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 100,),
-              GradientButton(ButtonText: "Announcements"),
+              GestureDetector(
+                onTap: () async {
+                  var dio = Dio();
+                  try {
+                    var response = await dio.get('https://property-guru-api.onrender.com/getannouncement');
+                    ann_title = response.data['title'];
+                    ann_content = response.data['announcement'];
+                    ann_date = response.data['date'];
+                    } catch (e) {
+                    print(e);
+                  }
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.fade,
+                          child: AnnouncementScreen(title: ann_title, content: ann_content, date: ann_date)));
+                },
+                  child: GradientButton(ButtonText: "Announcements")),
               const SizedBox(height: 20,),
               GradientButton(ButtonText: "Dummy Button"),
               const SizedBox(height: 20,),
