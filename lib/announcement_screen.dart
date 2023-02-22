@@ -14,6 +14,21 @@ class AnnouncementScreen extends StatefulWidget {
 }
 
 class _AnnouncementScreenState extends State<AnnouncementScreen> {
+
+  String message = "";
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+
+    if (arguments != null) {
+      Map? pushArguments = arguments as Map;
+      setState(() {
+        message = pushArguments['message'];
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return
