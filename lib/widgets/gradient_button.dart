@@ -39,7 +39,21 @@ class _GradientButtonState extends State<GradientButton> {
         child:
            ElevatedButton(
             onPressed: () async {
+                if (widget.ButtonText == "Register") {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.fade,
+                          child: const RegisterScreen()));
 
+                }
+                else if (widget.ButtonText == "Login Instead") {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.fade,
+                          child: const LoginScreen()));
+                }
 
             },
             style: ElevatedButton.styleFrom(

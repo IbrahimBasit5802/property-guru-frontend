@@ -82,7 +82,7 @@ class _AnnouncementScreenState extends State<AnnouncementScreen> {
             ),
             Text(
               widget.date.toString(),
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              style: TextStyle(color: Colors.white, fontSize: 18, fontStyle: FontStyle.italic),
             ),
             SizedBox(
               height: 5,
