@@ -92,9 +92,9 @@ class _DummyScreenState extends State<DummyScreen> {
 
 
               const SizedBox(height: 20,),
-              GradientButton(ButtonText: "Dummy Button"),
+              GradientButton(ButtonText: "Subscription"),
               const SizedBox(height: 20,),
-              GradientButton(ButtonText: "Dummy Button"),
+              GradientButton(ButtonText: "History"),
               const SizedBox(height: 20,),
               GradientButton(ButtonText: "Dummy Button"),
             ],

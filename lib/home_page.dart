@@ -55,36 +55,44 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(height: 20),
                       SizedBox(height: 20),
                       ProfileMenu(
+                        arrow: false,
                         text: "Name: " + widget.empName.toString(),
                         icon: "assets/icons/User.svg",
                         press: () => {},
                       ),
                       ProfileMenu(
+                        arrow: false,
                         text: "Phone: " + widget.empPhone.toString(),
                         icon: "assets/icons/Phone.svg",
                         press: () {},
                       ),
                       ProfileMenu(
+                        arrow: false,
                         text: "Emplyee ID: " + widget.empID.toString(),
                         icon: "assets/icons/employee-card-svgrepo-com.svg",
                         press: () {},
                       ),
                       ProfileMenu(
+                        arrow: false,
                         text: "Position: " + widget.empType.toString(),
                         icon: "assets/icons/job-management-svgrepo-com.svg",
                         press: () {},
                       ),
                       ProfileMenu(
+                        arrow: false,
                         text: "Salary: " + widget.empSalary.toString(),
                         icon: "assets/icons/Cash.svg",
                         press: () {},
                       ),
                       ProfileMenu(
+                        arrow: false,
                         text: "Status: " + widget.subStatus.toString(),
                         icon: "assets/icons/Star Icon.svg",
                         press: () {},
                       ),
                       ProfileMenu(
+                        arrow: true,
+                        color: Colors.green,
                         text: "Confirm",
                         icon: "assets/icons/Success.svg",
                         press: () {
@@ -97,6 +105,8 @@ class _HomePageState extends State<HomePage> {
 
                       ),
                       ProfileMenu(
+                        arrow: false,
+                        color: Colors.red,
                         text: "Logout",
                         icon: "assets/icons/Log out.svg",
                         press: () {

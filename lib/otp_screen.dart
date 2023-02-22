@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:naseeb/home_page.dart';
 import 'package:naseeb/login_screen.dart';
 import 'package:naseeb/pallete.dart';
 import 'package:naseeb/register_screen.dart';
@@ -157,15 +158,57 @@ class _OtpState extends State<Otp> {
                                 msg = response['msg'];
                               }
 
-                              !controller2.invalid
-                                  ? _showConfirmationDialogSignUp(
-                                  context, msg)
-                                  : _showErrorDialog(context, msg);
+                              showProgress(context, "Logging in...", false);
+
+                              try {
+                                response = await dio.post(
+                                    "https://property-guru-api.onrender.com/authenticate",
+                                    data: {"empID": widget.empID, "password": widget.empPassword});
+                                print(response);
+
+
+
+
+                              } catch (e) {
+                                print(e);
+
+                              }
+
+                              String? tok;
+                              tok = response.data['token'];
+                              String? subStatus;
+                              String? name;
+                              String? ID;
+                              String? phone;
+                              String? role;
+                              String? salary;
+                              try {
+                                response = await dio.get('https://property-guru-api.onrender.com/getinfo', options: Options(
+                                    headers: {
+                                      "Authorization": "Bearer $tok"
+                                    }
+
+
+                                ));
+                                print(response);
+                                subStatus = response.data['subscriptionStatus'].toString();
+                                name = response.data['name'].toString();
+                                ID = response.data['empID'].toString();
+                                phone = response.data['phone'].toString();
+                                role = response.data['userType'].toString();
+                                salary = response.data['salary'].toString();
+                                print("Sub : $subStatus");
+                              } catch (e) {
+                                print(e);
+                              }
+
+                              hideProgress();
+
                               Navigator.push(
                                   context,
                                   PageTransition(
                                       type: PageTransitionType.rightToLeftWithFade,
-                                      child: const LoginScreen()));
+                                      child: HomePage(token: tok, subStatus: subStatus, empID: ID, empName: name, empType: role, empPhone: phone, empSalary: salary)));
                             },
                             style: ButtonStyle(
                               foregroundColor:

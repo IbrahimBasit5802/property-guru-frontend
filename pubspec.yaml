@@ -49,6 +49,7 @@ dependencies:
   flutter_cards_reel: ^0.0.2
   expansion_card: ^0.1.0
   flutter_slimy_card: ^1.0.2
+  shared_preferences: ^2.0.17
 
 
 dev_dependencies:
