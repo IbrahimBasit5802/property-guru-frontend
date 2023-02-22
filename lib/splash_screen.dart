@@ -63,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: AnimatedSplashScreen(
-        splash: Image.asset('assets/images/signin_balls.png'),
+        splash: Image.asset('assets/icons/logo.png'),
 
         splashTransition: SplashTransition.fadeTransition,
         backgroundColor: Pallete.backgroundColor,
