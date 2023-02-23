@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:naseeb/addPhoneNumber_screen.dart';
 import 'package:naseeb/login_screen.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:naseeb/verifyController.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:progress_dialog/progress_dialog.dart';

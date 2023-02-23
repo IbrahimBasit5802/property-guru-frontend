@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:naseeb/home_page.dart';
 import 'package:naseeb/verifyController.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'loading_controller.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '/widgets/gradient_button.dart';
@@ -171,6 +172,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               else if(response.data['success'] == true){
                                 controller2.setValid();
                                 msg = response.data['msg'];
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                await prefs.setString('empID', empIDController.text.toString());
+                                await prefs.setString('empPassword', passwordController.text.toString());
                               }
 
                               token = response.data['token'];
@@ -232,10 +236,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 var response;
                                 String? msg;
 
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  empIDController.text = prefs.getString('empID')!;
+                                  passwordController.text = prefs.getString('empPassword')!;
 
-                                  empIDController.text = '286';
 
-                                  passwordController.text = 'hello1970';
 
                                 loadingController.isLoading();
                                 try {
@@ -310,6 +315,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Text('Ok'),
 
               onPressed: () async {
+
 
                 String? subStatus;
 

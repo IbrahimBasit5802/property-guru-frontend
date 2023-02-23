@@ -10,6 +10,7 @@ import 'package:naseeb/register_screen.dart';
 import 'package:naseeb/verifyController.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Invalid.dart';
 import 'addPhoneNumber_screen.dart';
@@ -203,6 +204,9 @@ class _OtpState extends State<Otp> {
                               }
 
                               hideProgress();
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              await prefs.setString('empID', ID!);
+                              await prefs.setString('empPassword', widget.empPassword.toString());
 
                               Navigator.push(
                                   context,
