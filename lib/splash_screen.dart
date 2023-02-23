@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
       home: AnimatedSplashScreen(
         splash: Image.asset('assets/icons/logo.png'),
 
-        splashTransition: SplashTransition.fadeTransition,
+        splashTransition: SplashTransition.slideTransition,
         backgroundColor: Pallete.backgroundColor,
 
         nextScreen: const LoginScreen(),

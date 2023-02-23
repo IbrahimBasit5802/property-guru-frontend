@@ -12,6 +12,8 @@ import '/widgets/login_field.dart';
 import 'Invalid.dart';
 import 'login_controller.dart';
 import 'pallete.dart';
+import 'package:local_auth/local_auth.dart';
+
 
 class LoginScreen extends StatefulWidget {
 
@@ -23,6 +25,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late ProgressDialog progressDialog;
+  final LocalAuthentication localAuth = LocalAuthentication();
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +194,101 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           );
                         })),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
+                Container(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [
+                          Pallete.gradient1,
+                          Pallete.gradient2,
+                          Pallete.gradient3,
+                        ],
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                      ),
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    child: GetBuilder<LoginController>(
+                        builder: (loginController) {
+                          return ElevatedButton(
+                            onPressed: () async {
+                              showProgress(context, 'Logging In', false);
+
+                              // Check if biometric authentication is available on the device
+                              bool canCheckBiometrics = await localAuth.canCheckBiometrics;
+                              if (!canCheckBiometrics) {
+                                hideProgress();
+                                return _showErrorDialog(context, 'Biometric authentication is not available on this device.');
+                              }
+
+                              // Show biometric prompt and authenticate the user
+                              bool authenticated = await localAuth.authenticate(
+                                localizedReason: 'Authenticate to access your account',
+                              );
+
+                              // If biometric authentication succeeds, proceed with login
+                              if (authenticated) {
+                                var dio = Dio();
+                                var response;
+                                String? msg;
+
+
+                                  empIDController.text = '286';
+
+                                  passwordController.text = 'hello1970';
+
+                                loadingController.isLoading();
+                                try {
+                                  response = await dio.post(
+                                    'https://property-guru-api.onrender.com/authenticate',
+                                    data: {
+                                      'empID': empIDController.text.toString(),
+                                      'password': passwordController.text.toString(),
+                                    },
+                                  );
+                                  print(response);
+                                } catch (e) {
+                                  print(e);
+                                }
+                                hideProgress();
+                                loadingController.isNotLoading();
+
+                                String? token;
+
+                                if (response.data['success'] == false) {
+                                  print('lmao');
+                                  controller2.setInvalid();
+                                  msg = response.data['msg'];
+                                } else if (response.data['success'] == true) {
+                                  controller2.setValid();
+                                  msg = response.data['msg'];
+                                }
+
+                                token = response.data['token'];
+
+                                !controller2.invalid
+                                    ? _showConfirmationDialog(context, msg, token)
+                                    : _showErrorDialog(context, msg);
+                              } else {
+                                hideProgress();
+                                return _showErrorDialog(context, 'Biometric authentication failed.');
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size(395, 55),
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                            ),
+                            child: const Text(
+                              "Fingerprint Login",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 17,
+                              ),
+                            ),
+                          );
+                        })),
+                const SizedBox(height: 30),
                 GradientButton(ButtonText: "Register", employeeID: "",),
               ],
             ),
@@ -213,6 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Text('Ok'),
 
               onPressed: () async {
+
                 String? subStatus;
 
                 String? name;
