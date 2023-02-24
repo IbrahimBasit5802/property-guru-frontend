@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'Invalid.dart';
 import 'otp_screen.dart';
 
@@ -123,6 +123,9 @@ class _MyPhoneState extends State<MyPhone> {
                       print("Phone Screen Password Value: " + widget.empPassword.toString());
                       print("Phone Screen Phone Value: " + countryController.text.toString() + phoneController.text.toString());
                       showProgress(context, "Sending Code", false);
+                      WidgetsFlutterBinding.ensureInitialized();
+
+                      await Firebase.initializeApp();
                       await FirebaseAuth.instance.verifyPhoneNumber(
                         phoneNumber: countryController.text.toString() + phoneController.text.toString(),
                           verificationCompleted: (PhoneAuthCredential credential) {

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -114,7 +115,9 @@ class _OtpState extends State<Otp> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () async {
+                              WidgetsFlutterBinding.ensureInitialized();
 
+                              await Firebase.initializeApp();
                               try {
                                 PhoneAuthCredential credential = PhoneAuthProvider.credential(
                                     verificationId: MyPhone.verify,
