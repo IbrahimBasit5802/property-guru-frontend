@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -123,6 +124,23 @@ class _MyPhoneState extends State<MyPhone> {
                       print("Phone Screen Password Value: " + widget.empPassword.toString());
                       print("Phone Screen Phone Value: " + countryController.text.toString() + phoneController.text.toString());
                       showProgress(context, "Sending Code", false);
+                      var dio = Dio();
+                      var  res;
+                      try {
+                        res = await dio.post("https://property-guru-api.onrender.com/checkphone", data: {
+                          "phone" : countryController.text.toString() + phoneController.text.toString()
+                        });
+                        print(res.data);
+
+                      } catch (e) {
+                        print(e);
+                      }
+                      if(res.data["success"] == false){
+                        hideProgress();
+                        _showErrorDialog(context, res.data["msg"]);
+                        return;
+                        print("Success");
+                      }
                       WidgetsFlutterBinding.ensureInitialized();
 
                       await Firebase.initializeApp();
@@ -132,17 +150,19 @@ class _MyPhoneState extends State<MyPhone> {
 
                           },
                           verificationFailed: (FirebaseAuthException e) {
+                            hideProgress();
+                            _showErrorDialog(context, e.message.toString());
                             print(e.message);
                           },
                           codeSent: (String verificationID, int? resendToken) {
-                          MyPhone.verify = verificationID;
-                          hideProgress();
+                            MyPhone.verify = verificationID;
+                            hideProgress();
 
-                          Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeftWithFade,
-                                    child: Otp(empID: widget.empID, empPassword: widget.empPassword, empPhone: countryController.text.toString() + phoneController.text.toString())));
+                            Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeftWithFade,
+                                      child: Otp(empID: widget.empID, empPassword: widget.empPassword, empPhone: countryController.text.toString() + phoneController.text.toString())));
                           },
                           codeAutoRetrievalTimeout: (String verificationID) {
 

@@ -118,7 +118,9 @@ class _OtpState extends State<Otp> {
                               WidgetsFlutterBinding.ensureInitialized();
 
                               await Firebase.initializeApp();
+
                               try {
+                                showProgress(context, "Signing Up...", false);
                                 PhoneAuthCredential credential = PhoneAuthProvider.credential(
                                     verificationId: MyPhone.verify,
                                     smsCode: _controller.text + _controller2.text + _controller3.text + _controller4.text + _controller5.text + _controller6.text
@@ -126,10 +128,13 @@ class _OtpState extends State<Otp> {
                                 await auth.signInWithCredential(credential);
                               }
                               catch(e) {
+                                hideProgress();
+                                _showErrorDialog(context, e.toString());
+                                return;
                                 print(e);
                               }
 
-                              showProgress(context, "Signing Up...", false);
+
                               var dio = Dio();
                               String? userName;
                               var response;
@@ -153,8 +158,16 @@ class _OtpState extends State<Otp> {
                               hideProgress();
 
                               if (response.data['success'] == false) {
+
                                 controller2.setInvalid();
                                 msg = response.data['msg'];
+                                _showErrorDialog(context, msg);
+
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.rightToLeftWithFade,
+                                        child: const RegisterScreen()));
                               }
 
                               else if(response.data['success'] == true){
@@ -162,9 +175,10 @@ class _OtpState extends State<Otp> {
                                 msg = response['msg'];
                               }
 
-                              showProgress(context, "Logging in...", false);
+
 
                               try {
+                                showProgress(context, "Logging in...", false);
                                 response = await dio.post(
                                     "https://property-guru-api.onrender.com/authenticate",
                                     data: {"empID": widget.empID, "password": widget.empPassword});
@@ -174,6 +188,7 @@ class _OtpState extends State<Otp> {
 
 
                               } catch (e) {
+                                hideProgress();
                                 print(e);
 
                               }
@@ -202,11 +217,12 @@ class _OtpState extends State<Otp> {
                                 role = response.data['userType'].toString();
                                 salary = response.data['salary'].toString();
                                 print("Sub : $subStatus");
+                                hideProgress();
                               } catch (e) {
                                 print(e);
                               }
 
-                              hideProgress();
+
                               SharedPreferences prefs = await SharedPreferences.getInstance();
                               await prefs.setString('empID', ID!);
                               await prefs.setString('empPassword', widget.empPassword.toString());
