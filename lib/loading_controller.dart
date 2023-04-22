@@ -14,3 +14,5 @@ class LoadingController extends GetxController {
     update();
   }
 }
+
+// another comment
